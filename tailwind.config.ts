@@ -36,7 +36,7 @@ const config: Config = {
   plugins: [require('daisyui')],
   daisyui: {
     themes: ['wireframe', 'black'],
-    darkMode: 'black',
+    darkTheme: 'black',
   },
 };
 export default config;
