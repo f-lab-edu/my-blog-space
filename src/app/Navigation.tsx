@@ -19,15 +19,14 @@ export default function Navigation() {
               })}
               <li className='mt-5 font-normal mb-2'>TAGS</li>
               <div className='flex flex-wrap gap-1'>
-                {['#JAVASCRIPT', '#REACT', '#NEXT.js', '#HTML', '#CSS'].map(
+                {['JAVASCRIPT', 'REACT', 'NEXT.js', 'HTML', 'CSS'].map(
                   (tag) => {
                     return (
-                      <button
-                        key={tag}
-                        className='btn p-0 min-h-0 min-w-0 h-6 px-2'
-                      >
-                        {tag}
-                      </button>
+                      <Link key={tag} href={`/blog?tag=${tag}`}>
+                        <button className='btn p-0 min-h-0 min-w-0 h-6 px-2'>
+                          #{tag}
+                        </button>
+                      </Link>
                     );
                   }
                 )}

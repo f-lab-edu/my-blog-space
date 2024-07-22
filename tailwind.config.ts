@@ -28,9 +28,6 @@ const config: Config = {
       margin: {
         auto: '0 auto',
       },
-      gap: {
-        '17': '4.25rem', // 68px
-      },
     },
   },
   plugins: [require('daisyui')],
