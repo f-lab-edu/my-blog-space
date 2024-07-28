@@ -5,11 +5,16 @@ import Link from 'next/link';
 import './globals.css';
 import { roboto, roboto_serif, noto_sans } from '../shared/font';
 import Navigation from './Navigation';
+import { initMSW } from '@/mocks';
 
 export const metadata: Metadata = {
   title: 'Good thing lasts',
   description: 'Blog By Benzy',
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  initMSW();
+}
 
 function Header() {
   return (
