@@ -15,6 +15,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+const validateFirebaseConfig = (config: Record<string, string | undefined>) => {
+  const missingKeys = Object.entries(config)
+    .filter(([_, value]) => value === undefined)
+    .map(([key]) => key);
+
+  if (missingKeys.length > 0) {
+    throw new Error(
+      `환경변수에 접근할 수 없습니다 : ${missingKeys.join(', ')}`
+    );
+  }
+};
+
+validateFirebaseConfig(firebaseConfig);
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
