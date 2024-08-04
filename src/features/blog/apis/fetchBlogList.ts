@@ -1,4 +1,12 @@
+import { Blog } from '@/entities/blog/types';
+
 // TODO: shared/apis에 공통 가공 처리 분리하기
+
+type FetchBlogListResponse = {
+  data: {
+    contents: Blog[];
+  };
+};
 
 export const fetchBlogList = async (params?: {
   category?: string;
@@ -17,6 +25,6 @@ export const fetchBlogList = async (params?: {
     `http://localhost:3000/api/blog${queryString ? `?${queryString}` : ''}`
   );
 
-  const { data } = await res.json();
-  return data;
+  const response: FetchBlogListResponse = await res.json();
+  return response.data;
 };
