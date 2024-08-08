@@ -1,13 +1,8 @@
 import Image from 'next/image';
-
-const fetchBlogs = async () => {
-  const res = await fetch('http://localhost:3000/api/blog');
-  const { data } = await res.json();
-  return data;
-};
+import { fetchBlogList } from '@/features/blog/apis';
 
 export default async function Page() {
-  const { contents } = await fetchBlogs();
+  const { contents } = await fetchBlogList();
 
   return (
     <>
