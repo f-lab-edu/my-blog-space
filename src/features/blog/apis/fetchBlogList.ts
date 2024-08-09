@@ -1,4 +1,9 @@
-// TODO: shared/apis에 공통 가공 처리 분리하기
+import { Blog } from '@/entities/blog/types';
+import { request } from '@/shared/apis';
+
+type FetchBlogListResponse = {
+  contents: Blog[];
+};
 
 export const fetchBlogList = async (params?: {
   category?: string;
@@ -13,10 +18,7 @@ export const fetchBlogList = async (params?: {
 
   const queryString = searchParams.toString();
 
-  const res = await fetch(
-    `http://localhost:3000/api/blog${queryString ? `?${queryString}` : ''}`
-  );
+  const res = await request<FetchBlogListResponse>(`/api/blog?${queryString}`);
 
-  const { data } = await res.json();
-  return data;
+  return res;
 };
