@@ -36,4 +36,15 @@ const getBlogList = http.get('http://localhost:3000/api/blog', () => {
   });
 });
 
-export const blogHandlers = [getBlogList];
+const getBlogDetail = http.get('http://localhost:3000/api/blog/:title', () => {
+  return HttpResponse.json({
+    data: {
+      id: 1,
+      title: '[Solved] React CRA Build & Cache Busting',
+      date: '2023-11-29',
+      author: '공민지',
+    },
+  });
+});
+
+export const blogHandlers = [getBlogList, getBlogDetail];
