@@ -4,10 +4,10 @@ import { getTimeDifference } from '@/shared/lib/getTimeDifference';
 export default async function BlogDetailLayout({
   children,
   params,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   params: { title: string };
-}) {
+}>) {
   const { date, title, author } = await fetchBlogDetail(params.title);
 
   return (
