@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
+import { MOCK_BASE_URL } from './constants';
 
-const getBlogList = http.get('http://localhost:3000/api/blog', () => {
+const getBlogList = http.get(`${MOCK_BASE_URL}/api/blog`, () => {
   return HttpResponse.json({
     data: {
       contents: [
@@ -36,7 +37,7 @@ const getBlogList = http.get('http://localhost:3000/api/blog', () => {
   });
 });
 
-const getBlogDetail = http.get('http://localhost:3000/api/blog/:title', () => {
+const getBlogDetail = http.get(`${MOCK_BASE_URL}/api/blog/:title`, () => {
   return HttpResponse.json({
     data: {
       id: 1,
