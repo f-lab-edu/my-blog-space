@@ -9,7 +9,7 @@ import {
 
 export default function Navigation() {
   return (
-    <nav className='menu w-54 mr-5 p-0'>
+    <nav className='menu w-54 mr-8 p-0'>
       <ul className='flex flex-col gap-5 font-serif font-black text-xl'>
         <li>
           <details>

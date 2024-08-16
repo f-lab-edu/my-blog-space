@@ -9,10 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.0.1",
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "^14.2.5",
+    "@types/mdx": "^2.0.13",
+    "dayjs": "^1.11.12",
     "firebase": "^10.12.3",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "rehype-pretty-code": "^0.13.2",
+    "shiki": "^1.12.1"
   },
   "devDependencies": {
     "@types/node": "^20",

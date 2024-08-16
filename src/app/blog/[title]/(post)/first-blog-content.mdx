@@ -1,0 +1,88 @@
+# 문제 발생 배경
+
+서비스에서 핫픽스를 진행할 상황이 발생.  
+핫픽스 진행 과정에서 새로 배포를 진행하였음에도 유저들은 수정 이전의 상태를 바라보고 있는 문제가 발생했다.
+
+<br />
+
+참고로 **CRA로 생성**된 프로젝트이며, 문제가 발생했던 코드는 아래의 형식과 같았다.  
+script.js 파일을 수정했지만, 반영이 되지 않는 문제를 겪고 있었다.
+
+```javascript showLineNumbers {2}
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+```
+
+```javascript {2} {3}#minus {4}#plus
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+const example = useScript('/util/script.js');
+```
+
+`인라인 코드 테스트`
+
+<br />
+
+# 해결 방법
+
+해당 문제의 원인은 클라이언트 브라우저의 캐시로 인한 문제로, **Cache Busting** 즉, 캐시 무효화를 통해 문제 해결이 가능하다. 캐시 무효화를 하는 방법에 대해서 알아보자.
+
+## 1. 파일 경로 뒤에 쿼리스트링 추가
+
+쿼리스트링이란 URL의 뒤에 문자열을 통한 데이터 전달 방법이다. 대표 사례로는 검색 필터 조건을 들 수 있다.
+
+쿼리 문자열을 변경하게 되면 브라우저는 캐시된 파일의 URL이 변경되었음을 감지하고, 브라우저는 이전 URL과 연결된 캐시를 무효화하고 새로운 URL로 파일을 가져오기 위해 서버에 요청하게 된다.
+
+아래와 같은 형식으로 사용할 수 있다.
+
+```javascript
+const example = useScript('/util/script.js?v=1123);
+const a = 'a'
+```
+
+## 2. 파일명 변경
+
+해당 방법도 간단하기는 하나, Git 추적이 불편해서 사용하지 않은 방식이다.
+예를 들어서, Example.js의 내용을 변경할 경우에는 Example.js 내에서 코드를 변경한 커밋 1, Example.js를 삭제하고 Example-new.js를 생성한 커밋 하나를 생성해야 히스토리 추적이 가능하다. 불필요한 커밋이 생성되는 것이 단점이라고 생각했다.
+
+## 3. React-app-rewired 라이브러리 사용
+
+해당 라이브러리는 Eject를 하지 않아도 기존의 CRA 프로젝트에 커스터마이징을 가능하게 하는 라이브러리이다. 해당 방법은 CRA가 제공하는 안전성을 깨트리게 되며, 다른 커스터마이징이 필요하지 않은 상태이기 때문에 망설여지게 됐다.
+
+# 해결 과정
+
+결국 해당 문제는 파일 경로 뒤에 쿼리스트링을 추가하여 캐시를 무효화 시키는 방식을 사용했다.
+선택 시 고려 사항은 1. 핫픽스가 거의 일어나지 않는 환경 2. 핫픽스 진행 과정이었기에, 라이브러리에 대한 이해도가 높지 않은 상태로 라이브러리를 선택하기에는 위험이 있다고 생각했다.
+
+# 문제 원인?
+
+그렇다면 캐시가 발생하는 원인은 뭐가 있을까?
+좀 더 근본적인 문제는 **CRA 환경에서의 정적 빌드 파일의 해쉬 값이 변경되지 않는 것**이다. 즉, CRA는 빌드 시에 동일한 파일이름을 반환한다.
+
+CRA 결과물 중에서 해쉬 값으로 된 파일명들은 정적파일로 처리하는 부분이며, 빌드 시에 해쉬 값이 동일하게 되면 배포가 이루어져도 웹서버는 최신 파일 교체 필요성 여부를 알지 못하게 된다.
+
+하지만, CRA 공식 문서에서는 다른 주장을 하고 있다.
+[공식 문서](https://create-react-app.dev/docs/production-build/)
+
+> Each file inside of the build/static directory will have a unique hash appended to the filename that is generated based on the contents of the file, which allows you to use aggressive caching techniques to avoid the browser re-downloading your assets if the file contents haven't changed. If the contents of a file changes in a subsequent build, the filename hash that is generated will be different.
+
+위의 문장은 프로젝트의 build/static 디렉토리에 있는 각 파일에 대해 유니크한 해시(고유한 문자열)가 파일 이름에 추가되는 것을 설명하고 있다. 이 해시는 해당 파일의 내용을 기반으로 생성되며, 파일 내용이 변경되지 않았다면 브라우저가 자산을 다시 다운로드 하지 않고 캐싱된 자산을 사용할 수 있게 하는 "적극적인 캐싱 기술"을 사용할 수 있도록 한다. 만약 파일의 내용이 후속 빌드에서 변경된다면 생성되는 파일 이름의 해시도 다를 것이라고 말한다.
+
+_공식문서에서 이렇게 말하는데 나는 어떻게 해쉬 값이 변경되지 않는다는 것을 알 수 있었을까?_
+
+궁금하다면, 자세한 내용은 하단 블로그를 참고하는 것이 좋다.
+[단테님 블로그](https://velog.io/@jay/it-is-nothing-but-static-file-cache)
+
+제법 혼란스러웠기 때문에, 직접 검증을 통해서 확인하기로 했다.
+확인 방법은 꽤나 단순하다. 그저 코드 수정 전 빌드 결과물과 코드 수정 후의 빌드 결과물을 비교하기만 하면 된다.
+
+<br />
+
+![](https://velog.velcdn.com/images/minzyaaaaaa/post/8139b958-be68-4d88-9d63-276527b3ee2f/image.png)
+
+(혹시 더 좋은 검증 방법이 있거나, 해당 검증 방법에 대한 의견이 있다면 알려주시면 감사하겠습니다.)
