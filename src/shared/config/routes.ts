@@ -19,6 +19,7 @@ export const ROUTES = {
   GALLERY: {
     BASE: '/gallery',
     WITH_CATEGORY: (category: string) => `/gallery?category=${category}`,
+    DETAIL: (slug: string) => `/gallery/${slug}`,
   },
   PORTFOLIO: {
     BASE: '/portfolio',

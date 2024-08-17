@@ -5,7 +5,7 @@ type FetchGalleryListResponse = {
   contents: Gallery[];
 };
 
-export const fetchGalleryList = async (params?: { category: string }) => {
+export const fetchGalleryList = async (params?: { category?: string }) => {
   const searchParams = new URLSearchParams();
 
   if (params?.category) searchParams.append('category', params.category);
