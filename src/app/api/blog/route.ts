@@ -1,20 +1,45 @@
 import { NextRequest } from 'next/server';
 
-import fs from 'fs';
-import path from 'path';
-
-type ResponseData = {
-  message: string;
-  data?: any;
-};
-
-const getMockData = () => {
-  const filePath = path.resolve('src/app/api/blog/db.json');
-  const jsonData = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(jsonData);
-};
+import { fireStore as db } from '@/firebase/index';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  Query,
+  WhereFilterOp,
+} from 'firebase/firestore';
 
 export async function GET(request: NextRequest) {
-  const data = await getMockData();
-  return Response.json({ message: '', data }, { status: 200 });
+  const searchParams = request.nextUrl.searchParams;
+
+  const filters: { key: string; operation: WhereFilterOp }[] = [
+    {
+      key: 'category',
+      operation: '==',
+    },
+    { key: 'tags', operation: 'array-contains' },
+  ];
+
+  let blogListQuery: Query = collection(db, 'blogs');
+
+  filters.forEach(({ key, operation }) => {
+    const value = searchParams.get(key);
+    if (value) {
+      blogListQuery = query(blogListQuery, where(key, operation, value));
+    }
+  });
+
+  const querySnapshot = await getDocs(blogListQuery);
+
+  const contents = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const data = {
+    contents,
+  };
+
+  return Response.json({ message: 'success', data }, { status: 200 });
 }
