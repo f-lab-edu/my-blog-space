@@ -4,10 +4,10 @@ import { BlogList } from '@/features/blog/components';
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { category?: string; tag?: string };
+  searchParams: { category?: string; tags?: string };
 }) {
-  const { tag, category } = searchParams;
-  const { contents } = await fetchBlogList({ tag, category });
+  const { tags, category } = searchParams;
+  const { contents } = await fetchBlogList({ tags, category });
 
   return (
     <div>

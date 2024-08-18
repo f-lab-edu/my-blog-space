@@ -7,13 +7,13 @@ type FetchBlogListResponse = {
 
 export const fetchBlogList = async (params?: {
   category?: string;
-  tag?: string;
+  tags?: string;
 }) => {
   const searchParams = new URLSearchParams();
 
   if (params) {
     if (params.category) searchParams.append('category', params.category);
-    if (params.tag) searchParams.append('tag', params.tag);
+    if (params.tags) searchParams.append('tags', params.tags);
   }
 
   const queryString = searchParams.toString();
