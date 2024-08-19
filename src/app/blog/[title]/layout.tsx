@@ -1,3 +1,5 @@
+import './code.css';
+
 import { fetchBlogDetail } from '@/features/blog/apis';
 import { getTimeDifference } from '@/shared/lib/getTimeDifference';
 

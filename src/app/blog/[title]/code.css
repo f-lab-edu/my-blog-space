@@ -1,0 +1,79 @@
+pre {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+pre [data-line] {
+  padding: 0 1rem;
+}
+
+code {
+  font-size: 14px;
+  text-align: left;
+  counter-reset: line;
+  @apply px-1 py-0.5 rounded;
+}
+
+code .word {
+  @apply border-b border-yellow-400;
+}
+
+[data-rehype-pretty-code-figure] code {
+  counter-reset: line;
+  @apply border border-gray-200 bg-gray-50;
+}
+
+[data-rehype-pretty-code-figure] [data-line]::before {
+  counter-increment: line;
+}
+
+[data-line-numbers] > [data-line]::before {
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  @apply text-gray-700;
+}
+
+[data-line-numbers-max-digits='2'] > [data-line]::before {
+  width: 1rem;
+}
+
+[data-line-numbers-max-digits='3'] > [data-line]::before {
+  width: 2rem;
+}
+
+[data-highlighted-line] {
+  @apply bg-gray-200;
+}
+
+[data-highlighted-line-id='minus'] {
+  position: relative;
+  @apply bg-red-100;
+}
+
+[data-highlighted-line-id='minus']::before {
+  content: '-';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  padding-left: 0.3rem;
+  @apply text-red-300;
+}
+
+[data-highlighted-line-id='plus'] {
+  position: relative;
+  @apply bg-blue-100;
+}
+
+[data-highlighted-line-id='plus']::before {
+  content: '+';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  padding-left: 0.3rem;
+  @apply text-blue-400;
+}
