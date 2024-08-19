@@ -32,7 +32,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('daisyui')],
+  plugins: [require('daisyui'), require('@tailwindcss/typography')],
   daisyui: {
     themes: ['wireframe', 'black'],
     darkTheme: 'black',
