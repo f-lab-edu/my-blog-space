@@ -7,28 +7,22 @@ import {
   query,
   where,
   Query,
-  WhereFilterOp,
+  QueryConstraint,
 } from 'firebase/firestore';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
-  const filters: { key: string; operation: WhereFilterOp }[] = [
-    {
-      key: 'category',
-      operation: '==',
-    },
-    { key: 'tags', operation: 'array-contains' },
-  ];
+  const category = searchParams.get('category');
+  const tags = searchParams.get('tags');
 
-  let blogListQuery: Query = collection(db, 'blogs');
+  const queries: QueryConstraint[] = [];
 
-  filters.forEach(({ key, operation }) => {
-    const value = searchParams.get(key);
-    if (value) {
-      blogListQuery = query(blogListQuery, where(key, operation, value));
-    }
-  });
+  if (category && category !== 'ALL')
+    queries.push(where('category', '==', category));
+  if (tags) queries.push(where('tags', 'array-contains', tags));
+
+  const blogListQuery: Query = query(collection(db, 'blogs'), ...queries);
 
   const querySnapshot = await getDocs(blogListQuery);
 

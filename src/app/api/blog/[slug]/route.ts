@@ -6,11 +6,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
-  let blogListQuery: Query = collection(db, 'blogs');
-
-  if (params.slug) {
-    blogListQuery = query(blogListQuery, where('slug', '==', params.slug));
-  }
+  const blogListQuery = params.slug
+    ? query(collection(db, 'blogs'), where('slug', '==', params.slug))
+    : collection(db, 'blogs');
 
   const querySnapshot = await getDocs(blogListQuery);
 
