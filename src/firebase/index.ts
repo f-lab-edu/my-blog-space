@@ -1,5 +1,8 @@
 import firebaseApp from './firebaseConfig';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const fireStore = getFirestore(firebaseApp);
-export default fireStore;
+const storage = getStorage(firebaseApp);
+
+export { fireStore, storage };

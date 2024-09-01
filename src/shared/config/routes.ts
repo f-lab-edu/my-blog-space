@@ -13,7 +13,7 @@ export const ROUTES = {
   BLOG: {
     BASE: '/blog',
     WITH_CATEGORY: (category: string) => `/blog?category=${category}`,
-    WITH_TAG: (tag: string) => `/blog?tag=${tag}`,
+    WITH_TAG: (tag: string) => `/blog?tags=${tag}`,
     DETAIL: (slug: string) => `/blog/${slug}`,
   },
   GALLERY: {
