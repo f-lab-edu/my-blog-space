@@ -2,6 +2,7 @@ import './code.css';
 
 import { fetchBlogDetail } from '@/features/blog/apis';
 import { getTimeDifference } from '@/shared/lib/getTimeDifference';
+import Comment from '@/entities/comment/Utterances';
 
 export default async function BlogDetailLayout({
   children,
@@ -22,6 +23,9 @@ export default async function BlogDetailLayout({
         </div>
       </header>
       {children}
+      <div className='mt-8'>
+        <Comment />
+      </div>
     </article>
   );
 }
