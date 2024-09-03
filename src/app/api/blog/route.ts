@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 
-import { fireStore as db } from '@/firebase/index';
+import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
 import {
   collection,
   getDocs,
@@ -22,7 +22,10 @@ export async function GET(request: NextRequest) {
     queries.push(where('category', '==', category));
   if (tags) queries.push(where('tags', 'array-contains', tags));
 
-  const blogListQuery: Query = query(collection(db, 'blogs'), ...queries);
+  const blogListQuery: Query = query(
+    collection(db, FIREBASE_COLLECTION_KEYS.BLOGS),
+    ...queries
+  );
 
   const querySnapshot = await getDocs(blogListQuery);
 

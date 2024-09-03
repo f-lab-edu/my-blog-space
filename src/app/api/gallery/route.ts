@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 
-import { fireStore as db } from '@/firebase/index';
+import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 export async function GET(request: NextRequest) {
@@ -9,8 +9,11 @@ export async function GET(request: NextRequest) {
   const category = searchParams.get('category');
 
   const galleryListQuery = category
-    ? query(collection(db, 'galleries'), where('category', '==', category))
-    : query(collection(db, 'galleries'));
+    ? query(
+        collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES),
+        where('category', '==', category)
+      )
+    : query(collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES));
 
   const querySnapshot = await getDocs(galleryListQuery);
 
