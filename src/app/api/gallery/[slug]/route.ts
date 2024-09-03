@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { fireStore as db } from '@/firebase/index';
+import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
 
 export async function GET(
   request: NextRequest,
@@ -15,7 +15,7 @@ export async function GET(
     );
 
   const galleryListQuery = query(
-    collection(db, 'galleries'),
+    collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES),
     where('slug', '==', params.slug)
   );
 
