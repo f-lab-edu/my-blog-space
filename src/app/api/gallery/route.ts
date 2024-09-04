@@ -3,7 +3,9 @@ import { NextRequest } from 'next/server';
 import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
-export async function GET(request: NextRequest) {
+import { handler, CustomError } from '@/app/api/_lib/handler';
+
+export const GET = handler(async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
 
   const category = searchParams.get('category');
@@ -16,6 +18,7 @@ export async function GET(request: NextRequest) {
     : query(collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES));
 
   const querySnapshot = await getDocs(galleryListQuery);
+  if (querySnapshot.empty) throw new CustomError(400);
 
   const contents = querySnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -27,4 +30,4 @@ export async function GET(request: NextRequest) {
   };
 
   return Response.json({ message: 'success', data }, { status: 200 });
-}
+});

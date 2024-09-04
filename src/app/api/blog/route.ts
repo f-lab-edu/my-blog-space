@@ -9,8 +9,9 @@ import {
   Query,
   QueryConstraint,
 } from 'firebase/firestore';
+import { handler, CustomError } from '@/app/api/_lib/handler';
 
-export async function GET(request: NextRequest) {
+export const GET = handler(async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
 
   const category = searchParams.get('category');
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
   );
 
   const querySnapshot = await getDocs(blogListQuery);
+  if (querySnapshot.empty) throw new CustomError(404);
 
   const contents = querySnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -39,4 +41,4 @@ export async function GET(request: NextRequest) {
   };
 
   return Response.json({ message: 'success', data }, { status: 200 });
-}
+});
