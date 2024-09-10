@@ -1,6 +1,6 @@
 import './code.css';
 
-import { fetchBlogDetail } from '@/features/blog/apis';
+import { queryBlogDetail } from '@/features/blog/apis';
 import { getTimeDifference } from '@/shared/lib/getTimeDifference';
 import Comment from '@/entities/comment/Utterances';
 
@@ -11,7 +11,7 @@ export default async function BlogDetailLayout({
   children: React.ReactNode;
   params: { title: string };
 }>) {
-  const { date, title, author } = await fetchBlogDetail(params.title);
+  const { date, title, author } = await queryBlogDetail(params.title);
 
   return (
     <article>

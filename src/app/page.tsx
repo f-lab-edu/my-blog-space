@@ -1,11 +1,12 @@
 import { BlogList } from '@/features/blog/components';
-import { fetchBlogList } from '@/features/blog/apis';
 import { GalleryList } from '@/features/gallery/components';
-import { fetchGalleryList } from '@/features/gallery/apis';
+
+import { queryGalleryList } from '@/features/gallery/apis';
+import { queryBlogList } from '@/features/blog/apis';
 
 export default async function Page() {
-  const { contents: blogContents } = await fetchBlogList();
-  const { contents: galleryContents } = await fetchGalleryList();
+  const { contents: blogContents } = await queryBlogList();
+  const { contents: galleryContents } = await queryGalleryList();
 
   return (
     <>
