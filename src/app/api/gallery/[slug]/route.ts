@@ -1,38 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { fireStore as db } from '@/firebase/index';
+import { getDoc, doc } from 'firebase/firestore';
+import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
+import { handler, CustomError } from '@/app/api/_lib/handler';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
-  const slug = params.slug;
+export const GET = handler(
+  async (request: NextRequest, { params }: { params: { slug: string } }) => {
+    const slug = params.slug;
 
-  if (!slug)
-    return NextResponse.json(
-      { message: '잘못된 요청 정보입니다.' },
-      { status: 400 }
-    );
+    if (!slug) throw new CustomError(400);
 
-  const galleryListQuery = query(
-    collection(db, 'galleries'),
-    where('slug', '==', params.slug)
-  );
+    const docRef = doc(db, FIREBASE_COLLECTION_KEYS.GALLERIES, slug);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) throw new CustomError(404);
 
-  const querySnapshot = await getDocs(galleryListQuery);
+    const data = {
+      id: docSnap.id,
+      ...docSnap.data(),
+    };
 
-  if (querySnapshot.empty) {
-    return NextResponse.json(
-      { message: '존재하지 않는 데이터입니다.' },
-      { status: 404 }
-    );
+    return NextResponse.json({ message: 'success', data }, { status: 200 });
   }
-
-  const doc = querySnapshot.docs[0];
-  const data = {
-    id: doc.id,
-    ...doc.data(),
-  };
-
-  return NextResponse.json({ message: 'success', data }, { status: 200 });
-}
+);

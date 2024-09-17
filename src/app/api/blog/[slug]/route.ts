@@ -1,29 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { collection, query, Query, where, getDocs } from 'firebase/firestore';
-import { fireStore as db } from '@/firebase/index';
+import { getDoc, doc } from 'firebase/firestore';
+import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
+import { handler, CustomError } from '@/app/api/_lib/handler';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
-  const blogListQuery = params.slug
-    ? query(collection(db, 'blogs'), where('slug', '==', params.slug))
-    : collection(db, 'blogs');
+export const GET = handler(
+  async (request: NextRequest, { params }: { params: { slug: string } }) => {
+    const slug = params.slug;
 
-  const querySnapshot = await getDocs(blogListQuery);
+    if (!slug) throw new CustomError(400);
 
-  if (querySnapshot.empty) {
-    return NextResponse.json(
-      { message: '존재하지 않는 블로그 제목입니다.' },
-      { status: 404 }
-    );
+    const docRef = doc(db, FIREBASE_COLLECTION_KEYS.BLOGS, slug);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) throw new CustomError(404);
+
+    const data = {
+      id: docSnap.id,
+      ...docSnap.data(),
+    };
+
+    return NextResponse.json({ message: 'success', data }, { status: 200 });
   }
-
-  const doc = querySnapshot.docs[0];
-  const data = {
-    id: doc.id,
-    ...doc.data(),
-  };
-
-  return NextResponse.json({ message: 'success', data }, { status: 200 });
-}
+);
