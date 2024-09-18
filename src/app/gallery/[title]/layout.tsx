@@ -1,4 +1,4 @@
-import { fetchGalleryDetail } from '@/features/gallery/apis';
+import { queryGalleryDetail } from '@/features/gallery/apis';
 import { getTimeDifference } from '@/shared/lib/getTimeDifference';
 import Comment from '@/entities/comment/Utterances';
 
@@ -9,7 +9,7 @@ export default async function BlogDetailLayout({
   children: React.ReactNode;
   params: { title: string };
 }>) {
-  const { date, title, artist } = await fetchGalleryDetail(params.title);
+  const { date, title, artist } = await queryGalleryDetail(params.title);
 
   return (
     <article>

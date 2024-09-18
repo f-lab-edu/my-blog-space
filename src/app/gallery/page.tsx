@@ -1,4 +1,4 @@
-import { fetchGalleryList } from '@/features/gallery/apis';
+import { queryGalleryList } from '@/features/gallery/apis';
 import { GalleryList } from '@/features/gallery/components';
 
 export default async function Page({
@@ -7,7 +7,7 @@ export default async function Page({
   searchParams: { category?: string };
 }>) {
   const { category } = searchParams;
-  const response = await fetchGalleryList({ category });
+  const response = await queryGalleryList({ category });
 
   return <GalleryList contents={response.contents} />;
 }

@@ -1,4 +1,4 @@
-import { fetchBlogList } from '@/features/blog/apis';
+import { queryBlogList } from '@/features/blog/apis';
 import { BlogList } from '@/features/blog/components';
 
 export default async function Page({
@@ -7,7 +7,7 @@ export default async function Page({
   searchParams: { category?: string; tags?: string };
 }) {
   const { tags, category } = searchParams;
-  const { contents } = await fetchBlogList({ tags, category });
+  const { contents } = await queryBlogList({ tags, category });
 
   return (
     <div>
