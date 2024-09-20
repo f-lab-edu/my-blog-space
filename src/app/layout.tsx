@@ -6,6 +6,7 @@ import './globals.css';
 import { roboto, roboto_serif, noto_sans } from '../shared/font';
 import Navigation from './Navigation';
 import { initMSW } from '@/mocks';
+import AuthProvider from '@/entities/auth/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'Good thing lasts',
@@ -64,11 +65,13 @@ export default function RootLayout({
       className={`${roboto.variable} ${roboto_serif.variable} ${noto_sans.variable}`}
     >
       <body className='py-5 px-10'>
-        <Header />
-        <div className='flex w-content m-auto'>
-          <Navigation />
-          <main className='flex-1'>{children}</main>
-        </div>
+        <AuthProvider>
+          <Header />
+          <div className='flex w-content m-auto'>
+            <Navigation />
+            <main className='flex-1'>{children}</main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
