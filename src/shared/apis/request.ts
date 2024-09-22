@@ -12,9 +12,9 @@ const getBaseUrl = () => {
 };
 
 // TODO: 에러처리 추가하기, base url 설정하기
-export async function request<T>(
+export async function request<T, B extends Record<string, unknown> = {}>(
   url: string,
-  options: RequestInit = {}
+  options: Omit<RequestInit, 'body'> & { body?: B } = {}
 ): Promise<T> {
   const { headers, method, body, ...restOptions } = options;
 
