@@ -1,0 +1,1 @@
+export { queryGuestbookList } from './queryGuestbookList';
