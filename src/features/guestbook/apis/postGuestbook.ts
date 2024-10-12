@@ -11,7 +11,6 @@ type PostGuestbookRequest = {
   name: string;
   image?: string;
   email?: string;
-  date: string;
 };
 
 export const postGuestbook = async (
@@ -21,7 +20,6 @@ export const postGuestbook = async (
     method: 'POST',
     body: {
       ...formData,
-      date: new Date().toISOString(),
     },
   });
 

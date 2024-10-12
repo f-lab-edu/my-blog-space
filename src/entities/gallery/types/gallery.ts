@@ -2,6 +2,6 @@ export type Gallery = {
   id: string;
   slug: string;
   title: string;
-  date: string;
+  createdAt: Date;
   thumbnail: string;
 };

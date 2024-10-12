@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
 import { handler, CustomError } from '@/app/api/_lib/handler';
@@ -18,6 +18,7 @@ export const POST = handler(async (req: NextRequest) => {
       name,
       image: image ?? '',
       email: email ?? '',
+      createdAt: serverTimestamp(),
     }
   );
 

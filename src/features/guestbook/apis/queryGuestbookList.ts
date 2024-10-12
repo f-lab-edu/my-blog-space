@@ -1,9 +1,12 @@
 import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export const queryGuestbookList = async () => {
   const querySnapshot = await getDocs(
-    collection(db, FIREBASE_COLLECTION_KEYS.GUESTBOOK)
+    query(
+      collection(db, FIREBASE_COLLECTION_KEYS.GUESTBOOK),
+      orderBy('createdAt', 'desc')
+    )
   );
 
   const contents = querySnapshot.docs.map((doc) => {
@@ -15,7 +18,7 @@ export const queryGuestbookList = async () => {
       email: data.email,
       name: data.name,
       image: data.image,
-      date: data.date,
+      createdAt: data.createdAt.toDate(),
     };
   });
 

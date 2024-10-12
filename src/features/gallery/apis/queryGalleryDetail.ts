@@ -19,7 +19,7 @@ export const queryGalleryDetail = async (slug: string) => {
   return {
     id: doc.id,
     artist: data.artist,
-    date: data.date,
+    createdAt: data.createdAt.toDate(),
     slug: data.slug,
     title: data.title,
   };
