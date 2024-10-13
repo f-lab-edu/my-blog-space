@@ -15,7 +15,7 @@ export default async function BlogDetailLayout({
   children: React.ReactNode;
   params: { title: string };
 }>) {
-  const { date, title, author, category, relatedBlogList } =
+  const { createdAt, title, author, category, relatedBlogList } =
     await queryBlogDetail(params.title);
 
   return (
@@ -23,7 +23,7 @@ export default async function BlogDetailLayout({
       <header className='mb-8'>
         <h2 className='pb-2 text-center font-bold text-4xl'>{title}</h2>
         <div className='flex justify-center gap-2 font-light text-sm text-slate-600'>
-          <span>{getTimeDifference(date)}</span>
+          <span>{getTimeDifference(createdAt)}</span>
           <span>@{author}</span>
         </div>
       </header>

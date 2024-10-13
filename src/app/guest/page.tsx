@@ -24,7 +24,7 @@ export default async function Page() {
               <div className='ml-4'>
                 <p className='font-bold'>{content.name}</p>
                 <p className='text-sm text-gray-500'>
-                  {dayjs(content.date).format('YYYY-MM-DD')}
+                  {dayjs(content.createdAt).format('YYYY-MM-DD')}
                 </p>
               </div>
             </div>

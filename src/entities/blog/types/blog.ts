@@ -3,6 +3,6 @@ export type Blog = {
   slug: string;
   title: string;
   content: string;
-  date: string;
+  createdAt: Date;
   thumbnail: string;
 };

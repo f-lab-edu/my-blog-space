@@ -6,6 +6,7 @@ import {
   where,
   Query,
   QueryConstraint,
+  orderBy,
 } from 'firebase/firestore';
 import { CustomError } from '@/app/api/_lib/handler';
 
@@ -24,7 +25,8 @@ export const queryBlogList = async (params?: {
 
   const blogListQuery: Query = query(
     collection(db, FIREBASE_COLLECTION_KEYS.BLOGS),
-    ...queries
+    ...queries,
+    orderBy('createdAt', 'desc')
   );
 
   const querySnapshot = await getDocs(blogListQuery);
@@ -37,7 +39,7 @@ export const queryBlogList = async (params?: {
       slug: data.slug,
       title: data.title,
       content: data.content,
-      date: data.date,
+      createdAt: data.createdAt.toDate(),
       thumbnail: data.thumbnail,
     };
   });

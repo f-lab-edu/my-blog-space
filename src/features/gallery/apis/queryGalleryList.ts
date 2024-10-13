@@ -1,5 +1,5 @@
 import { fireStore as db, FIREBASE_COLLECTION_KEYS } from '@/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 
 import { CustomError } from '@/app/api/_lib/handler';
 
@@ -9,9 +9,13 @@ export const queryGalleryList = async (params?: { category?: string }) => {
   const galleryListQuery = category
     ? query(
         collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES),
-        where('category', '==', category)
+        where('category', '==', category),
+        orderBy('createdAt', 'desc')
       )
-    : query(collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES));
+    : query(
+        collection(db, FIREBASE_COLLECTION_KEYS.GALLERIES),
+        orderBy('createdAt', 'desc')
+      );
 
   const querySnapshot = await getDocs(galleryListQuery);
   if (querySnapshot.empty) throw new CustomError(400);
@@ -22,7 +26,7 @@ export const queryGalleryList = async (params?: { category?: string }) => {
       id: doc.id,
       slug: data.slug,
       title: data.title,
-      date: data.date,
+      createdAt: data.createdAt.toDate(),
       thumbnail: data.thumbnail,
     };
   });

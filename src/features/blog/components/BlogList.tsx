@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-
+import dayjs from 'dayjs';
 import { ROUTES } from '@/shared/config/routes';
 import { Blog } from '@/entities/blog/types';
 
@@ -13,7 +13,9 @@ export default function BlogList({ contents = [] }: { contents: Blog[] }) {
             <div>
               <p className='font-bold'>{data.title}</p>
               <p>{data.content}</p>
-              <p className='font-light text-xs'>{data.date}</p>
+              <p className='font-light text-xs'>
+                {dayjs(data.createdAt).format('YYYY-MM-DD')}
+              </p>
             </div>
             <div className='relative w-16 h-16 bg-slate-100 overflow-clip'>
               <Image

@@ -54,7 +54,7 @@ export const queryBlogDetail = async (slug: string) => {
   const data = {
     id: doc.id,
     title: docData.title,
-    date: docData.date,
+    createdAt: docData.createdAt.toDate(),
     author: docData.author,
     category: docData.category,
     relatedBlogList,
