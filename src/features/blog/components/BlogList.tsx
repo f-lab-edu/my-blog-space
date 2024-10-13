@@ -15,13 +15,14 @@ export default function BlogList({ contents = [] }: { contents: Blog[] }) {
               <p>{data.content}</p>
               <p className='font-light text-xs'>{data.date}</p>
             </div>
-            <div className='relative w-16 h-16 bg-slate-100 border border-black'>
+            <div className='relative w-16 h-16 bg-slate-100 overflow-clip'>
               <Image
-                alt='blog-thumbnail'
+                alt={`${data.title} thumbnail`}
                 src={data.thumbnail}
-                fill
-                sizes='100%, 100%'
+                width={64}
+                height={64}
                 style={{ objectFit: 'cover' }}
+                quality={60}
               />
             </div>
           </li>

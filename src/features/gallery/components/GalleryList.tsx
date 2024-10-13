@@ -8,7 +8,7 @@ export default function GalleryList({
   contents,
 }: Readonly<{ contents: Gallery[] }>) {
   return (
-    <div className='flex flex-wrap justify-between gap-x-14 gap-y-14'>
+    <div className='flex flex-wrap gap-x-14 gap-y-14'>
       {contents.map((content) => (
         <Link key={content.id} href={ROUTES.GALLERY.DETAIL(content.slug)}>
           <div className='relative w-[198px] h-[198px] bg-slate-100 rounded overflow-hidden group '>
